@@ -1,0 +1,45 @@
+logging:
+  level:
+    io:
+      github:
+        resilience4j: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    
+
+
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 2s
+        permitted-number-of-calls-in-half-open-state: 2
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 100
+        minimum-number-of-calls: 3
+        wait-duration-in-open-state: 10s
+    instances:
+      studentService:
+        base-config: default
+        failure-rate-threshold: 40
+        wait-duration-in-open-state: 10s
+
+
+
+
+
+resilience4j.retry:
+    instances:
+        default:
+            maxAttempts: 3
+            waitDuration: 10s
+            enableExponentialBackoff: true
+            exponentialBackoffMultiplier: 2
